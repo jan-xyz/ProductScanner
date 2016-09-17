@@ -29,6 +29,7 @@
         </activity>
         <activity android:name=".ScanSuccessful"></activity>
         <activity android:name="com.scandit.barcodepicker.BarcodePickerActivity"></activity>
+        <activity android:name=".ListActivity"></activity>
     </application>
 
 </manifest>

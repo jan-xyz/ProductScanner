@@ -10,33 +10,38 @@
     tools:context="com.aaaaaab.shopnavigator.ListActivity">
 
     <LinearLayout
+        android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
         <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
-            <TextView
+            <EditText android:id="@+id/text_search"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="100"
                 android:hint="@string/txt_search">
-            </TextView>
+            </EditText>
 
-            <Button
+            <Button android:id="@+id/btn_scan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-               android:text="@string/btn_scan"/>
-        </LinearLayout>
+                android:text="@string/btn_scan"
+                android:onClick="startScandit"/>
 
+        </LinearLayout>
         <ListView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-        </ListView>
-
+            android:layout_height="wrap_content"
+            android:id="@+id/listView2"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="91dp" />
     </LinearLayout>
+
+
 
 </RelativeLayout>
