@@ -27,9 +27,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ListActivity" />
+        <activity
+            android:name=".DataBaseActivity"
+            android:label="@string/showDB" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".ScanSuccessful"></activity>
         <activity android:name="com.scandit.barcodepicker.BarcodePickerActivity"></activity>
-        <activity android:name=".ListActivity"></activity>
     </application>
 
 </manifest>
