@@ -1,4 +1,4 @@
-package com.aaaaaab.shopnavigator;
+package com.example.myfirstapp;
 
 import org.junit.Test;
 
