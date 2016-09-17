@@ -26,20 +26,32 @@
                 android:hint="@string/txt_search">
             </EditText>
 
-            <Button android:id="@+id/btn_scan"
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/btn_scan"
-                android:onClick="startScandit"/>
+                android:layout_height="wrap_content">
 
+                <Button android:id="@+id/btn_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/btn_search"
+                    android:onClick="sendRequest"/>
+
+                <Button android:id="@+id/btn_scan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/btn_scan"
+                    android:onClick="startScandit"/>
+
+            </LinearLayout>
         </LinearLayout>
         <ListView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/listView2"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="91dp" />
+            android:layout_centerHorizontal="true"/>
     </LinearLayout>
 
 

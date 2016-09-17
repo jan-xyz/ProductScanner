@@ -10,6 +10,7 @@ buildscript {
 
 allprojects {
     repositories {
+        jcenter()
         mavenCentral()
 
     }
@@ -31,7 +32,7 @@ subprojects {
 
     dependencies {
         compile(name:'ScanditBarcodeScanner', ext:'aar')
-
+        compile 'com.android.volley:volley:1.0.0'
     }
 }
 

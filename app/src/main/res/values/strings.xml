@@ -21,5 +21,6 @@
     <string name="button_add_product">+</string>
 
     <string name="editText_errorMessage">Das Feld darf nicht leer sein.</string>
+    <string name="btn_search">Search</string>
 
 </resources>
