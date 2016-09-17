@@ -22,5 +22,6 @@
 
     <string name="editText_errorMessage">Das Feld darf nicht leer sein.</string>
     <string name="btn_search">Search</string>
+    <string name="cab_delete">delete entries</string>
 
 </resources>

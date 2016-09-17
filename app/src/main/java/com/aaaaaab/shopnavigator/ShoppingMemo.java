@@ -43,6 +43,8 @@ public class ShoppingMemo {
     }
 
 
+
+
     @Override
     public String toString() {
         String output = quantity + " x " + product;
