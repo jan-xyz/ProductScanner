@@ -38,6 +38,7 @@ public class DataBaseActivity extends Activity {
     private ArrayAdapter listViewAdapter;
     private ArrayList<Editable> list;
     private RequestQueue queue;
+    private JSONArray jsonArray;
 
     String url ="https://api.siroop.ch/product/search/?query=";
     String limit = "&limit=3";
@@ -104,27 +105,27 @@ public class DataBaseActivity extends Activity {
         shoppingMemosListView.setAdapter(shoppingMemoArrayAdapter);
     }
 
-    public void addContent(View view) {
+    public void addContent(View view) throws JSONException {
         dataSource.open();
 
         final EditText editTextQuantity = (EditText) findViewById(R.id.editText_quantity);
-        final EditText editTextProduct = (EditText) findViewById(R.id.editText_product);
+        //final EditText editTextProduct = (EditText) findViewById(R.id.editText_product);
 
         String quantityString = editTextQuantity.getText().toString();
-        String product = editTextProduct.getText().toString();
+        String product = jsonArray.getJSONObject(0).getString("name");
 
         if(TextUtils.isEmpty(quantityString)) {
             editTextQuantity.setError(getString(R.string.editText_errorMessage));
             return;
         }
         if(TextUtils.isEmpty(product)) {
-            editTextProduct.setError(getString(R.string.editText_errorMessage));
+            //editTextProduct.setError(getString(R.string.editText_errorMessage));
             return;
         }
 
         int quantity = Integer.parseInt(quantityString);
         editTextQuantity.setText("");
-        editTextProduct.setText("");
+        //editTextProduct.setText("");
 
         dataSource.createShoppingMemo(product, quantity);
 
@@ -226,7 +227,7 @@ public class DataBaseActivity extends Activity {
                     public void onResponse(String response) {
 
                         //parse response JSON obj
-                        JSONArray jsonArray = null;
+                        jsonArray = null;
                         String name = null;
                         try {
                             jsonArray = new JSONArray(response);
