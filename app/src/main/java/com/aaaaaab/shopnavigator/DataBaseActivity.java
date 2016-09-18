@@ -69,7 +69,6 @@ public class DataBaseActivity extends Activity {
         Log.d(LOG_TAG, "The database will be set up.");
         dataSource = new ShoppingMemoDataSource(this);
 
-        //activateAddButton();
 
         initializeContextualActionBar();
     }

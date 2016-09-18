@@ -10,8 +10,7 @@
     <string name="startScandit">Start Scandit</string>
     <string name="txt_search">Type to search...</string>
     <string name="btn_scan">Scan</string>
-    <string name="showList">Show List</string>
-    <string name="showDB">Show Data Base</string>
+    <string name="showDB">Show Shoppinglist</string>
 
     <!-- Strings used for the data base -->
     <string name="hello_world">Hello world!</string>
