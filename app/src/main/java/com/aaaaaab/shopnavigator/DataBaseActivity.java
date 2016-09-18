@@ -165,6 +165,7 @@ public class DataBaseActivity extends Activity {
 
             @Override
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                dataSource.open();
                 switch (item.getItemId()) {
 
                     case R.id.cab_delete:
@@ -180,11 +181,14 @@ public class DataBaseActivity extends Activity {
                         }
                         showAllListEntries();
                         mode.finish();
+                        dataSource.close();
                         return true;
 
                     default:
+                        dataSource.close();
                         return false;
                 }
+
             }
 
             @Override
