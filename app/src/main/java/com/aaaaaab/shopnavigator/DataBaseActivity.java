@@ -1,31 +1,51 @@
 package com.aaaaaab.shopnavigator;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import java.util.ArrayList;
 import java.util.List;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.widget.AbsListView;
 import android.view.inputmethod.InputMethodManager;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+
 public class DataBaseActivity extends Activity {
 
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_data_base);
-//    }
+    private EditText editText;
+    private ListView listView;
+    private ArrayAdapter listViewAdapter;
+    private ArrayList<Editable> list;
+    private RequestQueue queue;
+
+    String url ="https://api.siroop.ch/product/search/?query=";
+    String limit = "&limit=3";
+    String apiKey = "&apikey=f246b0749fa7484e81d387a471ad67aa";
+
+
+    //LIST OF ARRAY STRINGS WHICH WILL SERVE AS LIST ITEMS
+    ArrayList<String> listItems=new ArrayList<String>();
 
     public static final String LOG_TAG = DataBaseActivity.class.getSimpleName();
 
@@ -36,27 +56,20 @@ public class DataBaseActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_data_base);
 
-//        ShoppingMemo testMemo = new ShoppingMemo("Apples", 5, 102);
-//        Log.d(LOG_TAG, "Content of the test memo: " + testMemo.toString());
-//
-//        dataSource = new ShoppingMemoDataSource(this);
+        //Create an EditText widget and add the watcher
+        editText = (EditText) findViewById(R.id.text_search);
 
-//        Log.d(LOG_TAG, "The data source is being opened.");
-//        dataSource.open();
-//
-//        ShoppingMemo shoppingMemo = dataSource.createShoppingMemo("Test products", 2);
-//        Log.d(LOG_TAG, "The following entry has been written to the database:");
-//        Log.d(LOG_TAG, "ID: " + shoppingMemo.getId() + ", Content: " + shoppingMemo.toString());
-//
-//        Log.d(LOG_TAG, "The following entries are in the database:");
-//        showAllListEntries();
-//
-//        Log.d(LOG_TAG, "The data source is being closed.");
-//        dataSource.close();
+        list = new ArrayList<>();
+        listViewAdapter = new ArrayAdapter(this,
+                android.R.layout.simple_list_item_1, list);
+        listView = (ListView) findViewById(R.id.listView2);
+        listView.setAdapter(listViewAdapter);
+
+        queue = Volley.newRequestQueue(this);
         Log.d(LOG_TAG, "The database will be set up.");
         dataSource = new ShoppingMemoDataSource(this);
 
-        activateAddButton();
+        //activateAddButton();
 
         initializeContextualActionBar();
     }
@@ -95,54 +108,36 @@ public class DataBaseActivity extends Activity {
     public void addContent(View view) {
         dataSource.open();
 
-        ShoppingMemo shoppingMemo = dataSource.createShoppingMemo("Test products", 2);
-        Log.d(LOG_TAG, "The following entry has been written to the database:");
-        Log.d(LOG_TAG, "ID: " + shoppingMemo.getId() + ", Content: " + shoppingMemo.toString());
-
-        Log.d(LOG_TAG, "The following entries are in the database:");
-        showAllListEntries();
-
-        Log.d(LOG_TAG, "The data source is being closed.");
-        dataSource.close();
-    }
-
-    private void activateAddButton() {
-        Button buttonAddProduct = (Button) findViewById(R.id.button_add_product);
         final EditText editTextQuantity = (EditText) findViewById(R.id.editText_quantity);
         final EditText editTextProduct = (EditText) findViewById(R.id.editText_product);
 
-        buttonAddProduct.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        String quantityString = editTextQuantity.getText().toString();
+        String product = editTextProduct.getText().toString();
 
-                String quantityString = editTextQuantity.getText().toString();
-                String product = editTextProduct.getText().toString();
+        if(TextUtils.isEmpty(quantityString)) {
+            editTextQuantity.setError(getString(R.string.editText_errorMessage));
+            return;
+        }
+        if(TextUtils.isEmpty(product)) {
+            editTextProduct.setError(getString(R.string.editText_errorMessage));
+            return;
+        }
 
-                if(TextUtils.isEmpty(quantityString)) {
-                    editTextQuantity.setError(getString(R.string.editText_errorMessage));
-                    return;
-                }
-                if(TextUtils.isEmpty(product)) {
-                    editTextProduct.setError(getString(R.string.editText_errorMessage));
-                    return;
-                }
+        int quantity = Integer.parseInt(quantityString);
+        editTextQuantity.setText("");
+        editTextProduct.setText("");
 
-                int quantity = Integer.parseInt(quantityString);
-                editTextQuantity.setText("");
-                editTextProduct.setText("");
+        dataSource.createShoppingMemo(product, quantity);
 
-                dataSource.createShoppingMemo(product, quantity);
+        InputMethodManager inputMethodManager;
+        inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        if(getCurrentFocus() != null) {
+            inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        }
 
-                InputMethodManager inputMethodManager;
-                inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                if(getCurrentFocus() != null) {
-                    inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-                }
+        showAllListEntries();
 
-                showAllListEntries();
-            }
-        });
-
+        dataSource.close();
     }
 
     private void initializeContextualActionBar() {
@@ -219,5 +214,50 @@ public class DataBaseActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void sendRequest(View view) {
+        listViewAdapter.clear();
+        // assemble reqUrl to receive JSON obj
+        String reqUrl = url + editText.getText() + limit + apiKey;
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, reqUrl,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        //parse response JSON obj
+                        JSONArray jsonArray = null;
+                        String name = null;
+                        try {
+                            jsonArray = new JSONArray(response);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            try {
+                                listViewAdapter.add(jsonArray.getJSONObject(i).getString("name"));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                listViewAdapter.clear();
+                listViewAdapter.add("Sorry, please try again.");
+            }
+        });
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
+    }
+
+    public void startScandit(View view) {
+        // starts the intent that will use the Scandit API to add a product to the shopping list
+        Intent intent = new Intent(this, ScanSuccessful.class);
+        startActivity(intent);
     }
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
@@ -12,37 +12,81 @@
     tools:context=".MainActivity">
 
     <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:focusableInTouchMode="true">
 
-        <EditText
+        <!-- Jan's Stuff -->
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="@string/editText_hint_quantity"
-            android:inputType="number"
-            android:id="@+id/editText_quantity"
-            android:layout_weight="1" />
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/editText_hint_quantity"
+                    android:inputType="number"
+                    android:id="@+id/editText_quantity"
+                    android:layout_weight="1" />
+                <EditText android:id="@+id/text_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/txt_search">
+                </EditText>
+                <Button android:id="@+id/btn_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/btn_search"
+                    android:onClick="sendRequest"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ListView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/listView2"/>
+                <Button android:id="@+id/btn_scan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/btn_scan"
+                    android:onClick="startScandit"/>
+            </LinearLayout>
+        </LinearLayout>
 
-        <EditText
-            android:layout_width="wrap_content"
+        <!-- Patrick's stuff -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/editText_hint_product"
-            android:id="@+id/editText_product"
-            android:layout_weight="4" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/button_add_product"
-            android:id="@+id/button_add_product"
-            android:onClick="addContent" />
+            android:focusableInTouchMode="true">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:focusableInTouchMode="true">
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/editText_hint_product"
+                    android:id="@+id/editText_product" />
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/button_add_product"
+                    android:id="@+id/button_add_product"
+                    android:onClick="addContent" />
+            </LinearLayout>
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/listview_shopping_memos"
+                android:layout_weight="500"/>
+        </LinearLayout>
     </LinearLayout>
-
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/listview_shopping_memos"
-        android:layout_gravity="center_horizontal" />
-</LinearLayout>
+</RelativeLayout>
